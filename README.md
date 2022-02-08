@@ -3,13 +3,14 @@ Dados disponibilizados pela ANTT e pelo órgão catarinense. Ambos são relacion
 
 # Estrutura de pastas
 
-
-. interestaduais/raw <br>
-. interestaduais/ref<br>
-.. interestaduais/ref/csv<br>
-.. interestaduais/ref/parquet<br>
+1) interestaduais <br>
+1.1) raw <br>
+1.2) ref <br>
+1.2.1) csv <br>
+1.2.2) parquet <br>
 <br>
-. intermunicipal_sc/raw<br>
-. intermunicipal_sc/ref<br>
-.. intermunicipal_sc/ref/csv<br>
-.. intermunicipal_sc/ref/parquet
+2) intermunicipal_sc <br>
+2.1) raw <br>
+2.2) ref <br>
+2.2.1) csv <br>
+2.2.2) parquet
