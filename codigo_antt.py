@@ -4,9 +4,9 @@ def get_antt_padrao_2005(ano):
     import numpy as np
 
     if ano == 2014:
-        df = pd.read_csv(f'raw/{ano}.csv', sep = ';', encoding = 'cp1252')
+        df = pd.read_csv(f'./interestadual/raw/{ano}.csv', sep = ';', encoding = 'cp1252')
     else:
-        df = pd.read_csv(f'raw/{ano}.csv', sep = ';', encoding = 'utf-8')
+        df = pd.read_csv(f'./interestadual/raw/{ano}.csv', sep = ';', encoding = 'utf-8')
 
     # renomeia colunas ARQUIVOS ANTT 2005 ATÉ 2014
     df.rename(columns={"CODIGO" : "codigo",
@@ -44,6 +44,11 @@ def get_antt_padrao_2005(ano):
     df['volta_idoso_gratis'] = df['volta_idoso_gratis'].fillna(0)
     df['ida_idoso_desconto'] = df['ida_idoso_desconto'].fillna(0)
     df['volta_idoso_desconto'] = df['volta_idoso_desconto'].fillna(0)
+    df['viagem_idas'] = df['viagem_idas'].fillna(0)
+    df['viagem_voltas'] = df['viagem_voltas'].fillna(0)
+    df['lugares_idas'] = df['lugares_idas'].fillna(0)
+    df['lugares_voltas'] = df['lugares_voltas'].fillna(0)
+
 
     # cria coluna pax_total com soma
     df["pax_total"] = (df["ida_pagantes"] +
@@ -99,7 +104,8 @@ def get_antt_padrao_2005(ano):
     # printa msg dataset OK
     print(f"Sucesso para o dataset de {ano}")
 
-    return df.to_csv(f'ref/{ano}.csv', sep = ';', quotechar = "'", encoding = 'utf-8', index = False)
+    # return df.to_csv(f'./interestadual/ref/{ano}.csv', sep = ';', quotechar = "'", encoding = 'utf-8', index = False)
+    return df.to_parquet(f'./interestadual/ref/parquet/{ano}.parquet', compression = 'snappy', index = False)
 
 def get_antt_padrao_2015(ano):
     # importa lib
@@ -107,7 +113,7 @@ def get_antt_padrao_2015(ano):
     import numpy as np
 
     # lê arquivo origem
-    df = pd.read_excel(f'raw/{ano}.xlsx')
+    df = pd.read_excel(f'./interestadual/raw/{ano}.xlsx')
 
     # renomeia colunas ARQUIVOS ANTT 2015
     df.rename(columns={ 'ano' : 'ano',
@@ -189,7 +195,8 @@ def get_antt_padrao_2015(ano):
     # printa msg dataset OK
     print(f"Sucesso para o dataset de {ano}")
 
-    return df.to_csv(f'ref/{ano}.csv', sep = ';', quotechar = "'", encoding = 'utf-8', index = False)
+    # return df.to_csv(f'./interestadual/ref/{ano}.csv', sep = ';', quotechar = "'", encoding = 'utf-8', index = False)
+    return df.to_parquet(f'./interestadual/ref/parquet/{ano}.parquet', compression = 'snappy', index = False)
 
 def get_antt_padrao_2016(ano):
     # importa lib
@@ -197,7 +204,7 @@ def get_antt_padrao_2016(ano):
     import numpy as np
 
     # lê arquivo origem
-    df = pd.read_excel(f'raw/{ano}.xlsx')
+    df = pd.read_excel(f'./interestadual/raw/{ano}.xlsx')
 
     # renomeia colunas ARQUIVOS ANTT 2016
     df.rename(columns={ 'ano' : 'ano',
@@ -270,7 +277,8 @@ def get_antt_padrao_2016(ano):
     # printa msg dataset OK
     print(f"Sucesso para o dataset de {ano}")
 
-    return df.to_csv(f'ref/{ano}.csv', sep = ';', quotechar = "'", encoding = 'utf-8', index = False)
+    # return df.to_csv(f'./interestadual/ref/{ano}.csv', sep = ';', quotechar = "'", encoding = 'utf-8', index = False)
+    return df.to_parquet(f'./interestadual/ref/parquet/{ano}.parquet', compression = 'snappy', index = False)
 
 def get_antt_padrao_2017(ano):
     # importa lib
@@ -278,7 +286,7 @@ def get_antt_padrao_2017(ano):
     import numpy as np
 
     # lê arquivo origem
-    df = pd.read_excel(f'raw/{ano}.xlsx')
+    df = pd.read_excel(f'./interestadual/raw/{ano}.xlsx')
 
     # renomeia colunas ARQUIVOS ANTT 2017
     df.rename(columns={'ano' : 'ano',
@@ -351,7 +359,8 @@ def get_antt_padrao_2017(ano):
     # printa msg dataset OK
     print(f"Sucesso para o dataset de {ano}")
 
-    return df.to_csv(f'ref/{ano}.csv', sep = ';', quotechar = "'", encoding = 'utf-8', index = False)
+    # return df.to_csv(f'./interestadual/ref/{ano}.csv', sep = ';', quotechar = "'", encoding = 'utf-8', index = False)
+    return df.to_parquet(f'./interestadual/ref/parquet/{ano}.parquet', compression = 'snappy', index = False)
 
 def get_antt_padrao_2018(ano):
     # importa lib
@@ -359,7 +368,7 @@ def get_antt_padrao_2018(ano):
     import numpy as np
 
     # lê CSV origem
-    df = pd.read_excel(f'raw/{ano}.xlsx')
+    df = pd.read_excel(f'./interestadual/raw/{ano}.xlsx')
 
     # renomeia colunas ARQUIVOS ANTT 2018
     df.rename(columns={'ano' : 'ano',
@@ -432,7 +441,8 @@ def get_antt_padrao_2018(ano):
     # printa msg dataset OK
     print(f"Sucesso para o dataset de {ano}")
 
-    return df.to_csv(f'ref/{ano}.csv', sep = ';', quotechar = "'", encoding = 'utf-8', index = False)        
+    # return df.to_csv(f'./interestadual/ref/{ano}.csv', sep = ';', quotechar = "'", encoding = 'utf-8', index = False)
+    return df.to_parquet(f'./interestadual/ref/parquet/{ano}.parquet', compression = 'snappy', index = False)
 
 def get_antt_padrao_2019(ano):
     # importa lib
@@ -440,7 +450,7 @@ def get_antt_padrao_2019(ano):
     import numpy as np
 
     # lê CSV origem
-    df = pd.read_excel(f'raw/{ano}.xlsx')
+    df = pd.read_excel(f'./interestadual/raw/{ano}.xlsx')
 
     # renomeia colunas ARQUIVOS ANTT 2019 EM DIANTE
     df.rename(columns={'ano' : 'ano',
@@ -513,7 +523,8 @@ def get_antt_padrao_2019(ano):
     # printa msg dataset OK
     print(f"Sucesso para o dataset de {ano}")
 
-    return df.to_csv(f'ref/{ano}.csv', sep = ';', quotechar = "'", encoding = 'utf-8', index = False)
+    # return df.to_csv(f'./interestadual/ref/{ano}.csv', sep = ';', quotechar = "'", encoding = 'utf-8', index = False)
+    return df.to_parquet(f'./interestadual/ref/parquet/{ano}.parquet', compression = 'snappy', index = False)
 
 def get_antt(ano):
     # importa lib
@@ -521,30 +532,31 @@ def get_antt(ano):
     import numpy as np
     import os
 
-    padrao_2005 = (2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014)
-    padrao_2015 = (2015)
-    padrao_2016 = (2016)
-    padrao_2017 = (2017)
-    padrao_2018 = (2018)
-    padrao_2019 = (2019, 2020, 2021)
+    padrao_2005 = [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014]
+    padrao_2015 = [2015]
+    padrao_2016 = [2016]
+    padrao_2017 = [2017]
+    padrao_2018 = [2018]
+    padrao_2019 = [2019, 2020, 2021]
     
-    os.system('mkdir ref')
+    # os.system('mkdir ref')
+    # os.system('mkdir ref/parquet')
 
     if ano in padrao_2005:
         get_antt_padrao_2005(ano)
     
-    elif ano in padrao_2015:
+    if ano in padrao_2015:
         get_antt_padrao_2015(ano)
 
-    elif ano in padrao_2016:
+    if ano in padrao_2016:
         get_antt_padrao_2016(ano)
     
-    elif ano in padrao_2017:
+    if ano in padrao_2017:
         get_antt_padrao_2017(ano)
 
-    elif ano in padrao_2018:
+    if ano in padrao_2018:
         get_antt_padrao_2018(ano)
 
-    elif ano in padrao_2019:
+    if ano in padrao_2019:
         get_antt_padrao_2019(ano)
     
