@@ -1,6 +1,7 @@
 def get_deter(ano):
     # import libs
     import os
+    import time
     import datetime
     import pandas as pd
     import numpy as np
@@ -138,8 +139,8 @@ def get_deter(ano):
     df.to_parquet(f'{path_data}/parquet/{ano}.parquet', compression = 'snappy', index = False)
     # printa msg datahoraOK
     print(f"Gravação no formato Parquet efetuada para o dataset de {ano}")
-    
-    return print(f"Sucesso para o dataset de {ano}\n")
+    print(f"Sucesso para o dataset de {ano}\n")
+    time.sleep(8)
 
 def ler_sc():
     import pandas as pd
