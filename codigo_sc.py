@@ -8,8 +8,9 @@ def get_deter(ano):
 
     # carimbo_data = str(datetime.datetime.now())[0:19].replace(':', '-').replace(' ', '_')
     path_raw = "./intermunicipal_sc/raw"
-    carimbo_data = str(datetime.datetime.now())[0:10]
-    path_data = f"./intermunicipal_sc/ref/{carimbo_data}"
+    path_data = "./intermunicipal_sc/ref/"
+    # carimbo_data = str(datetime.datetime.now())[0:10]
+    # path_data = f"./intermunicipal_sc/ref/{carimbo_data}"
     
     if not os.path.exists(path_data):
         os.mkdir(path_data)
@@ -20,10 +21,12 @@ def get_deter(ano):
     if not os.path.exists(f"{path_data}/parquet"):
         os.mkdir(f"{path_data}/parquet")
 
+    print("Lendo o arquivo RAW")
     df = pd.read_csv(f'{path_raw}/{ano}.csv', delimiter = ';', encoding = 'cp1252', header = 1)
 
     df.replace("  ", "", regex = True, inplace = True)
 
+    print("Renomeando colunas")
     if ano == 2020:
         df.rename(columns={
             "Destino Seção" : "des_localidade_nome",
@@ -38,18 +41,6 @@ def get_deter(ano):
             "Linha/Ramal" : "prefixo",
             "Seção" : "sequencial",
             "Operacao" : "servico_ambito"}, inplace=True)
-
-        df["prefixo"].replace(" ", "", regex = True, inplace = True)
-        df["sequencial"].replace(" ", "", regex = True, inplace = True)
-        df["km"].replace(" ", "", regex = True, inplace = True)
-
-        df["pax_jovem_gratis"].replace(" ", "", regex = True, inplace = True)
-        df["pax_pagantes"].replace(" ", "", regex = True, inplace = True)
-        df["pax_total"].replace(" ", "", regex = True, inplace = True)
-
-        df["pax_jovem_gratis"].replace("", '0', regex = True, inplace = True)
-        df["pax_pagantes"].replace("", '0', regex = True, inplace = True)
-        df["pax_total"].replace("", '0', regex = True, inplace = True)
 
         df.drop(["Itinerario", "Tempo", "Vl.Tarifa"], axis = 1, inplace = True)
     
@@ -68,21 +59,11 @@ def get_deter(ano):
             "SECAO" : "sequencial",
             "OPERACAO" : "servico_ambito"}, inplace=True)
         
-        df["prefixo"].replace(" ", "", regex = True, inplace = True)
-        df["sequencial"].replace(" ", "", regex = True, inplace = True)
-        df["km"].replace(" ", "", regex = True, inplace = True)
-
-        df["pax_jovem_gratis"].replace(" ", "", regex = True, inplace = True)
-        df["pax_pagantes"].replace(" ", "", regex = True, inplace = True)
-        df["pax_total"].replace(" ", "", regex = True, inplace = True)
-
-        df["pax_jovem_gratis"].replace("", '0', regex = True, inplace = True)
-        df["pax_pagantes"].replace("", '0', regex = True, inplace = True)
-        df["pax_total"].replace("", '0', regex = True, inplace = True)
-        
         df.drop(["ITINERARIO", "TEMPO"], axis = 1, inplace = True)
 
     # cria colunas para uso futuro
+    print("Criando novas colunas")
+
     df["ano"] = ano
     df["codigo"] = np.nan
     df["des_localidade_id"] = np.nan
@@ -124,23 +105,48 @@ def get_deter(ano):
     df["volta_pagantes"] = np.nan
     df["volta_passelivre"] = np.nan
 
+    print("Limpando caracteres - str.strip()")
+    df["ori_localidade_nome"] = df["ori_localidade_nome"].str.strip()
+    df["des_localidade_nome"] = df["des_localidade_nome"].str.strip()
+    df["ori_municipio_nome"] = df["ori_municipio_nome"].str.strip()
+    df["des_municipio_nome"] = df["des_municipio_nome"].str.strip()
+
+    print("Limpando colunas numéricas - prefixo, sequencial e km")
+    df["prefixo"].replace(" ", "", regex = True, inplace = True)
+    df["sequencial"].replace(" ", "", regex = True, inplace = True)
+    df["km"].replace(" ", "", regex = True, inplace = True)
+    df["pax_jovem_gratis"].replace(" ", "", regex = True, inplace = True)
+    df["pax_pagantes"].replace(" ", "", regex = True, inplace = True)
+    df["pax_total"].replace(" ", "", regex = True, inplace = True)
+    
+    print("Substituindo valores em branco por 0 - colunas pax_jovem_gratis, pax_pagantes e pax_total")
+    df["pax_jovem_gratis"].replace("", '0', regex = True, inplace = True)
+    df["pax_pagantes"].replace("", '0', regex = True, inplace = True)
+    df["pax_total"].replace("", '0', regex = True, inplace = True)
+
+    print("Criando coluna ori_des_localidade_nome")
     # cria coluna com origen-destino localidade
     df["ori_des_localidade_nome"] = (df["ori_localidade_nome"] + "-" + df["des_localidade_nome"])
 
+    print("Reindexando colunas por ordem alfabética")
     # reindexa colunas alfabeticamente
     df = df.reindex(sorted(df.columns), axis = 1)
 
-    print(f"O dataset tem um total de {len(df.columns)} colunas.\nPor padrão, é OBRIGATÓRIA a existência de 53 colunas no arquivo.")
+    print("Verificando o número de colunas do dataset")
+    if len(df.columns) == 53:
+        print(f"A quantidade de colunas ({len(df.columns)} colunas) do dataset está CORRETA.")
+    else:
+        print(f"A quantidade de colunas ({len(df.columns)} colunas) do dataset está INCORRETA.")
 
     df.to_csv(f'{path_data}/csv/{ano}.csv', sep = ';', encoding = 'utf-8', index = False)
-    # printa msg dataset OK
     print(f"Gravação no formato CSV efetuada para o dataset de {ano}")
     
     df.to_parquet(f'{path_data}/parquet/{ano}.parquet', compression = 'snappy', index = False)
-    # printa msg datahoraOK
     print(f"Gravação no formato Parquet efetuada para o dataset de {ano}")
+    
+    # end
     print(f"Sucesso para o dataset de {ano}\n")
-    time.sleep(8)
+    time.sleep(3)
 
 def ler_sc():
     import pandas as pd
